@@ -8,11 +8,13 @@ using UnityEngine.SceneManagement;
 
 public class movement : MonoBehaviour
 {
+    //Movement and jump parameters
     public float movementSpeed = 5f;
     public float jumpForce = 10f;
     private bool isJumping = false;
     private bool checkLand = false;
 
+    //Input handling
     private InputAction inputMovement;
     private Vector2 movementDirection;
     private Rigidbody rb;
@@ -24,16 +26,19 @@ public class movement : MonoBehaviour
     public float stepHeight = 0.2f;
     public float stepSmooth = 0.05f;
 
+    //Object grabbing
     public Camera fpsCam;
     private bool isGrabbing = false;
     private GameObject grabbedObject;
 
+    //UI text
     public TextMeshProUGUI victoryText;
 
     
 
     private void Awake()
     {
+        //Initialize input and components
         victoryText.enabled = false;
         inputMovement = new InputAction(binding: "<Keyboard>/WASD");
         inputMovement.performed += OnMove;
@@ -48,11 +53,13 @@ public class movement : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        //Read movement input
         movementDirection = context.ReadValue<Vector2>();
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
+        //Trigger jump when the action is performed
         if (context.performed)
         {
             Jump();
@@ -62,6 +69,7 @@ public class movement : MonoBehaviour
 
     public void onObjectGrab(InputAction.CallbackContext context)
     {
+        //Handle object grabbing using raycasting
         if (context.started)
         {
             RaycastHit hit;
@@ -77,6 +85,7 @@ public class movement : MonoBehaviour
         }
         else if (context.canceled)
         {
+            //Here the object gets released
             grabbedObject.GetComponent<Rigidbody>().useGravity = true;
             isGrabbing = false;
             grabbedObject = null;
@@ -98,6 +107,7 @@ public class movement : MonoBehaviour
 
         if (context.CompareTag("Victory"))
         {
+            //Displaying victory message
             victoryText.enabled = true;
             victoryText.text = "Goodjob on winning this level! :)";
         }
@@ -114,6 +124,7 @@ public class movement : MonoBehaviour
 
     public void Jump()
     {
+        //Sets the isJumping boolean to true, if on the ground
         if (checkLand)
         {
             isJumping = true;
@@ -123,25 +134,29 @@ public class movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Handle player movement
         Vector3 move = new Vector3(movementDirection.x, 0, movementDirection.y) * movementSpeed * Time.deltaTime;
         transform.Translate(move);
         
         if (isJumping) 
         { 
+            //Handles player jumping using addforce on the rigidbody of the player
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); 
             isJumping = false;
         }
         
+        //Handle object grabbing and the objects movement
         if (isGrabbing && grabbedObject != null)
         {
+            //Use raycasting to determine the new position of the grabbed object
             RaycastHit hit;
             if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit))
             {
+                //Update the position of the grabbed object
                 Vector3 directionToHit = hit.point - fpsCam.transform.position;
                 float distanceToHit = Vector3.Distance(fpsCam.transform.position, grabbedObject.transform.position);
                 Vector3 newPosition = fpsCam.transform.position + fpsCam.transform.forward * distanceToHit;
 
-                // Move the object to the new position
                 grabbedObject.transform.position = newPosition;
                 if (Input.GetKey(KeyCode.X))
                 {
@@ -160,12 +175,13 @@ public class movement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Handles climbing steps
         climbStep();
     }
-//n the article, fixed values (0.1 and 0.2) are used for the detection distance, which will cause stuttering in some cases.
-//To fix this, I changed it to a value proportional to the object's velocity. This optimizes the feel to a certain extent.
+
     void climbStep()
     {
+        //Raycast to detect steps and then teleport the step
             RaycastHit hitLower;
             if (Physics.Raycast(StepRayUnder.transform.position, transform.TransformDirection(Vector3.forward),
                     out hitLower, 0.1f))
