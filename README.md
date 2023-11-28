@@ -1,5 +1,5 @@
 # Portal "but worse" Copy
-
+![Alt Text](https://i.imgur.com/0cPiBHq.png)
 The idea behind this game was to make a game like Portal. The player can freely see in any direction, move, and can jump in a 3D-world and can use either left or right mouse buttons to shoot either red or blue portals. The player must move the block to two specific points to advance in the level, which can be done in either way you like. This block can be moved by using the middle mouse button and using X or Z to move it towards the player or away from the player.
 
 ## Parts of the Game
