@@ -12,8 +12,7 @@ public class CubeScriptGoal : MonoBehaviour
 
     //Booleans to check if the cube has collided with the objectives
     private bool hasCollided = false;
-    private bool hasCollidedfirst = false;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,15 +34,11 @@ public class CubeScriptGoal : MonoBehaviour
         //Check if the cube has not collided and the trigger is an "Objectivefirst"
         if (other.CompareTag("Objectivefirst"))
         {
-            if (!hasCollidedfirst && other.CompareTag("Objective"))
-            {
-                hasCollidedfirst = true;
-                
-                //Trigger the way animation if it assigned
+            //Trigger the way animation if it assigned
                 if (wayAnimation != null)
                 {
                     wayAnimation.SetTrigger("WayTrigger");
-                }
+                
             }
         }
     }

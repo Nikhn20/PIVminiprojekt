@@ -109,7 +109,7 @@ public class movement : MonoBehaviour
         {
             //Displaying victory message
             victoryText.enabled = true;
-            victoryText.text = "Goodjob on winning this level! :)";
+            victoryText.text = "Good job on winning this level! :)";
         }
 
 
