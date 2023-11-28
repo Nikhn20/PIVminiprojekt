@@ -9,6 +9,7 @@ The idea behind this game was to make a game like Portal. The player can freely 
 - **Camera:** the camera is sitting on the player and can freely see in any direction using the mouse.
 - **Moveable Block:** can be moved using middle mouse button to drag the movable block and moved towards or away from you with using the keys X or Z
 - **Level:** a level designed in ProBuild that contains 2 easy puzzle elements, the level restart if the player hits the bottom of the level.
+- **UI:** a counter that updates each time a portal is used, and UI showing the end of the game
 
 The game can be further increased in difficulty by making new levels that require more thinking and more intricate positions of the portal, however for this case an easy map was made to show the functionality of the game features.
 
